@@ -2,6 +2,8 @@
 
 Gecko codes to play **Metroid Prime 3: Corruption** (Wii, PAL **RM3P01**) with the **Classic Controller** (or Classic Controller Pro), using twin-stick controls in the style of *Metroid Prime Remastered*. No pointing at the screen and no motion gestures.
 
+Tested and working on **Dolphin** and on a **real Wii** (USB Loader GX).
+
 ![Controls](docs/controls.png)
 
 ## Features
