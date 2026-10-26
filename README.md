@@ -2,12 +2,13 @@
 
 Gecko codes to play **Metroid Prime 3: Corruption** (Wii, PAL **RM3P01**) with the **Classic Controller** (or Classic Controller Pro), using twin-stick controls in the style of *Metroid Prime Remastered*. No pointing at the screen and no motion gestures.
 
-Tested and working on **Dolphin** and on a **real Wii** (USB Loader GX).
+**Current version: v1.0.** Tested and working on **Dolphin** and on a **real Wii** (USB Loader GX).
 
 ![Controls](docs/controls.png)
 
 ## Features
 - **Twin-stick aiming:** left stick moves, right stick turns the camera with a centred reticle (based on PrimeHack).
+- **Fixed-position screens** (ship cockpit, consoles, code entry, levers): the right stick moves the camera and the left stick moves Samus's hand, which stays where you leave it.
 - **No gestures:** grapple lasso with L + X, shake with B, spring ball with B and boost ball with X in morph ball, levers and locks with the left stick.
 - **Comfortable menus:** left-stick cursor, snapping visor menu, two-stick map with zoom on the D-pad.
 - **Skip cutscenes:** hold + for one second.
