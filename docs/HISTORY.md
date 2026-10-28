@@ -1,5 +1,8 @@
 # Version history
 
+## v1.01
+- Visor menu works like the Trilogy mod: the cursor jumps to the visor you push towards, stays there when you release the stick and returns to the centre after 0.7 s.
+
 ## v1.0
 - First public release.
 - The Wii HOME menu works normally (the mod doesn't touch the controller while it is open).

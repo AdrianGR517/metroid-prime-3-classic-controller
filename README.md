@@ -2,7 +2,7 @@
 
 Gecko codes to play **Metroid Prime 3: Corruption** (Wii, PAL **RM3P01**) with the **Classic Controller** (or Classic Controller Pro), using twin-stick controls in the style of *Metroid Prime Remastered*. No pointing at the screen and no motion gestures.
 
-**Current version: v1.0.** Tested and working on **Dolphin** and on a **real Wii** (USB Loader GX).
+**Current version: v1.01.** Tested and working on **Dolphin** and on a **real Wii** (USB Loader GX).
 
 ![Controls](docs/controls.png)
 
@@ -10,7 +10,7 @@ Gecko codes to play **Metroid Prime 3: Corruption** (Wii, PAL **RM3P01**) with t
 - **Twin-stick aiming:** left stick moves, right stick turns the camera with a centred reticle (based on PrimeHack).
 - **Fixed-position screens** (ship cockpit, consoles, code entry, levers): the right stick moves the camera and the left stick moves Samus's hand, which stays where you leave it.
 - **No gestures:** grapple lasso with L + X, shake with B, spring ball with B and boost ball with X in morph ball, levers and locks with the left stick.
-- **Comfortable menus:** left-stick cursor, snapping visor menu, two-stick map with zoom on the D-pad.
+- **Comfortable menus:** left-stick cursor, magnetic visor menu, two-stick map with zoom on the D-pad.
 - **Skip cutscenes:** hold + for one second.
 - **Normal Wii HOME menu:** the mod stays out of the way while it is open.
 
@@ -40,7 +40,7 @@ You need the **European PAL release (RM3P01)**. Other releases (RM3E01, Japanese
 1. Enable cheats: *Config → General → Enable Cheats*.
 2. Copy [`codes/RM3P01.ini`](codes/RM3P01.ini) to `Documents/Dolphin Emulator/GameSettings/` (back up any existing `RM3P01.ini` first).
 3. Set Wii Remote 1 to *Emulated Wii Remote* and choose **Classic Controller** as the extension.
-4. In the game's *Properties → Gecko Codes*, make sure **Classic Controller v1.0** and **Skip cutscenes (hold + 1 s)** are both ticked.
+4. In the game's *Properties → Gecko Codes*, make sure **Classic Controller v1.01** and **Skip cutscenes (hold + 1 s)** are both ticked.
 
 **Wii (USB Loader GX)**
 1. Copy [`codes/RM3P01.gct`](codes/RM3P01.gct) to `SD:/codes/`.

@@ -18,7 +18,7 @@
 2. **Copy the codes:** put `RM3P01.ini` in `Documents/Dolphin Emulator/GameSettings/`. Back up any existing `RM3P01.ini` first, as it will be overwritten.
    - Alternative: right-click the game → *Properties → Gecko Codes → Add*, paste `classic_controller.txt` as "Classic Controller", then `skip_cutscenes.txt` as "Skip cutscenes". Tick both.
 3. **Set up the controller:** *Controllers → Wii Remote 1: Emulated Wii Remote → Configure*, set **Extension** to **Classic Controller** and map its buttons to your pad.
-4. In *Properties → Gecko Codes*, check that **Classic Controller v1.0** and **Skip cutscenes (hold + 1 s)** are ticked. Don't enable other versions of the code at the same time.
+4. In *Properties → Gecko Codes*, check that **Classic Controller v1.01** and **Skip cutscenes (hold + 1 s)** are ticked. Don't enable other versions of the code at the same time.
 
 To use the HOME menu in Dolphin, map the emulated Wii Remote's *Point* directions (in *Motion Simulation*) to the mouse cursor.
 

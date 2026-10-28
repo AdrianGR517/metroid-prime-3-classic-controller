@@ -45,8 +45,8 @@ The original game can only be played with a Wii Remote and Nunchuk, pointing at 
 ### Visor menu (ZL)
 | Classic Controller | Action |
 |---|---|
-| Right stick | Pick a visor |
-| Release the stick | The cursor snaps to the nearest visor (including the standard one in the centre) |
+| Right stick | Push towards a visor: the cursor jumps to it |
+| Release the stick | The cursor stays on that visor; after 0.7 s without touching the stick it goes back to the centre (standard visor) |
 
 ## Quality-of-life improvements
 - **Modern shooter camera:** the reticle stays in the centre and the right stick turns the camera, with no pointer involved (based on PrimeHack).
@@ -59,7 +59,7 @@ The original game can only be played with a Wii Remote and Nunchuk, pointing at 
   - The Wii Remote's motion sensor is frozen so nothing triggers on its own.
 - **Comfortable menu cursor:** moved with the left stick, slow near the centre and fast at full tilt. It follows the stick's exact direction, moves at the same speed horizontally and vertically (16:9), doesn't vanish or recentre when you let go, and doesn't leave the screen.
 - **Consoles and interaction screens** (ship, code entry, levers): the left stick moves Samus's hand and it stays where you leave it. The mod detects these screens using the game's own state, so they never trigger by mistake.
-- **Snapping visor menu:** when you release the stick, the cursor snaps to the nearest visor.
+- **Magnetic visor menu:** push the right stick towards a visor and the cursor jumps to it and stays there when you let go; after 0.7 s untouched it returns to the centre.
 - **Two-stick map:** rotate with the right stick, pan with L + left stick, zoom with the D-pad.
 - **Skip cutscenes:** hold + for a second to skip any cutscene, even the first time you see it (Classic Controller or Wii Remote).
 - **No Nunchuk warnings:** the game no longer asks you to connect the Nunchuk.

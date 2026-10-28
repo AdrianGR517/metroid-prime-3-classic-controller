@@ -6,7 +6,7 @@ v0.9: controles de movimiento (agitar, látigo, palancas, cerraduras) como en Pr
 """
 import struct, keystone, capstone
 
-VERSION = "v1.0"
+VERSION = "v1.01"
 HOOK = 0x803c3f90   # justo después de memcpy(estado, KPADStatus, 0x84) en el sondeo del mando
 
 # --- Botones -----------------------------------------------------------------
@@ -60,6 +60,9 @@ INT_LIM_Y  = 0.55
 VISOR_SIDE_X = 0.202  # v0.15c: centros de los visores (recalibrados con 2 capturas de Adrián; coordenadas del puntero, y+ = abajo)
 VISOR_SIDE_Y = 0.168
 VISOR_TOP_Y  = -0.388
+WHEEL_T = int(0.7 * 60750000)   # v1.01 (como en Trilogy): ruleta de visores con imanes: con el stick der. a más del ~71% el puntero salta a la opción
+# hacia la que apunta (arriba si y >= |x|/2, si no la de su lado) y se queda ahí al soltar; tras 0,7 s sin tocarlo vuelve
+# al centro (visor normal). VB+36 (POS_OFF) = time base del último empujón.
 VISOR_DROP = 0.85     # v0.14b: menú de visores: si el stick cae más de un 15% en un frame (al soltarlo) el puntero se congela    # v0.11b: suavizado de la velocidad (quita tirones del stick de 6 bits)
 # --- Controles de movimiento (v0.9, basados en PrimeHack) ---------------------
 LASSO_BTN  = 'X'      # v0.16: látigo: con LOCK_BTN pulsado (fijado), X lanza el látigo y mantenerla tira
@@ -172,7 +175,7 @@ K = [('SY',-1.0),('ONE',1.0),('ZERO',0.0),('DZ2',DZ*DZ),('YAW',YAW_RATE),('PITCH
      ('PMAX',PITCH_MAX),('PMIN',-PITCH_MAX),('HALF',0.5),('SIXTH',1/6),('INV24',1/24),('TINY',1e-7),('ADZ',AXIS_DZ),
      ('LSTEP',LASSO_STEP),('QUARTER',0.25),('ROT',ROT_RATE),('ROTDZ',ROT_DZ),('LEVER',LEVER_RATE),('LDZ',LEVER_DZ),
      ('RMX',RET_MAX_X),('RMY',RET_MAX_Y),('RSM',RET_SMOOTH),
-     ('LSENS',INT_SENS),('MSENS',MENU_SENS),('MBASE',MENU_BASE),('MCUR',1-MENU_BASE),('MSM',MENU_SMOOTH),('MSX',MENU_ASPECT**-0.5),('MSY',-(MENU_ASPECT**0.5)),('MLX',MENU_LIM_X),('IMX',INT_LIM_X),('IMY',INT_LIM_Y),('VDROP',VISOR_DROP),('VSX',VISOR_SIDE_X),('VSY',VISOR_SIDE_Y),('VTY',VISOR_TOP_Y)]
+     ('LSENS',INT_SENS),('MSENS',MENU_SENS),('MBASE',MENU_BASE),('MCUR',1-MENU_BASE),('MSM',MENU_SMOOTH),('MSX',MENU_ASPECT**-0.5),('MSY',-(MENU_ASPECT**0.5)),('MLX',MENU_LIM_X),('IMX',INT_LIM_X),('IMY',INT_LIM_Y),('VSX',VISOR_SIDE_X),('VSY',VISOR_SIDE_Y),('VTY',VISOR_TOP_Y)]
 KO = {name: 4*i for i,(name,_) in enumerate(K)}
 # v0.16d: las variables viven en el hueco de ceros del DOL (VAR+0x40.., base r8) y no dentro del código
 MLOCK_OFF = 4*len(K); MLASSO_OFF = MLOCK_OFF + 4; MSHAKE_OFF = MLASSO_OFF + 4   # máscaras de botones (editables por el configurador)
@@ -629,65 +632,39 @@ nocursor:
   b setdpd
 
 visormode:
+  # v1.01: magnets, back to centre after WHEEL_T (see WHEEL_T)
   fmuls 9,3,3
   fmadds 9,4,4,9
   li 3,2
-  lfs 10,{POS_OFF}(8)
-  stfs 9,{POS_OFF}(8)
-  lwz 12,{POS_OFF+4}(8)
-  fcmpu 0,9,10
-  bgt vunfreeze
-  lfs 11,{KO['VDROP']}(7)
-  fmuls 11,10,11
-  fcmpu 0,9,11
-  bge vchk
-  li 12,1
-  b vstore
-vunfreeze:
-  li 12,0
-vstore:
-  stw 12,{POS_OFF+4}(8)
-vchk:
-  cmpwi 12,0
-  bne vsnap
-  lfs 10,{KO['DZ2']}(7)
-  fcmpu 0,9,10
-  bge vfree
-vsnap:
+  lfs 13,{KO['HALF']}(7)
+  mftb 6
+  fcmpu 0,9,13
+  bge wpush
+  lwz 12,{POS_OFF}(8)
+  subf 12,12,6
+  lis 11,{WHEEL_T >> 16}
+  ori 11,11,{WHEEL_T & 0xffff}
+  cmplw 12,11
+  blt pset
   lfs 8,{KO['ZERO']}(7)
-  lfs 9,{PX_OFF}(8)
-  lfs 10,{PY_OFF}(8)
-  fmuls 3,9,9
-  fmadds 3,10,10,3
+  stfs 8,{PX_OFF}(8)
+  stfs 8,{PY_OFF}(8)
+  b pset
+wpush:
+  stw 6,{POS_OFF}(8)
+  fabs 5,3
+  fmuls 5,5,13
+  fsubs 5,4,5
+  lfs 8,{KO['ZERO']}(7)
   lfs 11,{KO['VSX']}(7)
   fneg 12,11
-  fsel 11,9,11,12
+  fsel 11,3,11,12
+  fsel 11,5,8,11
   lfs 12,{KO['VSY']}(7)
-  fsubs 5,9,11
-  fmuls 5,5,5
-  fsubs 6,10,12
-  fmadds 5,6,6,5
   lfs 13,{KO['VTY']}(7)
-  fsubs 6,10,13
-  fmuls 6,6,6
-  fmadds 6,9,9,6
-  fsubs 0,6,5
-  fsel 4,0,5,6
-  fsel 9,0,11,8
-  fsel 10,0,12,13
-  fsubs 0,3,4
-  fsel 9,0,9,8
-  fsel 10,0,10,8
-  stfs 9,{PX_OFF}(8)
-  stfs 10,{PY_OFF}(8)
-  b pset
-vfree:
-  lfs 5,{KO['ONE']}(7)
-  lfs 6,{KO['SY']}(7)
-  fmuls 3,3,5
-  fmuls 4,4,6
-  stfs 3,{PX_OFF}(8)
-  stfs 4,{PY_OFF}(8)
+  fsel 12,5,13,12
+  stfs 11,{PX_OFF}(8)
+  stfs 12,{PY_OFF}(8)
   b pset
 ptrmode:
   lis 12,{hi(STATE_MANAGER)}
